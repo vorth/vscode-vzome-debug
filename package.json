@@ -1,12 +1,13 @@
 {
-  "name": "mock-debug",
-  "displayName": "Mock Debug",
-  "version": "0.52.0",
-  "publisher": "ms-vscode",
-  "description": "Starter extension for developing debug adapters for VS Code.",
-  "author": {
-    "name": "Microsoft Corporation"
-  },
+	"name": "vzome-debug",
+	"displayName": "vZome Debugger",
+	"version": "0.0.1",
+	"publisher": "vZome",
+	"description": "Tools for working with vZome model files.",
+	"author": {
+		"name": "Scott Vorthmann",
+		"email": "scott@vzome.com"
+	},
   "license": "MIT",
   "keywords": [
     "multi-root ready"
@@ -14,17 +15,17 @@
   "engines": {
     "vscode": "^1.66.0"
   },
-  "icon": "images/mock-debug-icon.png",
+	"icon": "images/vZome-6-logo.png",
   "categories": [
     "Debuggers"
   ],
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/Microsoft/vscode-mock-debug.git"
+    "url": "https://github.com/Microsoft/vscode-vzome-debug.git"
   },
   "bugs": {
-    "url": "https://github.com/Microsoft/vscode-mock-debug/issues"
+    "url": "https://github.com/Microsoft/vscode-vzome-debug/issues"
   },
   "scripts": {
     "compile": "tsc -p ./",
@@ -66,11 +67,11 @@
   "main": "./dist/extension.js",
   "browser": "./dist/web-extension.js",
   "activationEvents": [
-    "onDebugResolve:mock",
-    "onDebugDynamicConfigurations:mock",
-    "onCommand:extension.mock-debug.getProgramName",
-    "onCommand:extension.mock-debug.runEditorContents",
-    "onCommand:extension.mock-debug.debugEditorContents"
+    "onDebugResolve:vzome",
+    "onDebugDynamicConfigurations:vzome",
+    "onCommand:extension.vzome-debug.getProgramName",
+    "onCommand:extension.vzome-debug.runEditorContents",
+    "onCommand:extension.vzome-debug.debugEditorContents"
   ],
   "workspaceTrust": {
     "request": "never"
@@ -79,165 +80,117 @@
     "menus": {
       "editor/title/run": [
         {
-          "command": "extension.mock-debug.runEditorContents",
-          "when": "resourceLangId == markdown",
+          "command": "extension.vzome-debug.runEditorContents",
+          "when": "resourceLangId == xml",
           "group": "navigation@1"
         },
         {
-          "command": "extension.mock-debug.debugEditorContents",
-          "when": "resourceLangId == markdown",
+          "command": "extension.vzome-debug.debugEditorContents",
+          "when": "resourceLangId == xml",
           "group": "navigation@2"
         }
       ],
       "commandPalette": [
         {
-          "command": "extension.mock-debug.debugEditorContents",
-          "when": "resourceLangId == markdown"
+          "command": "extension.vzome-debug.debugEditorContents",
+          "when": "resourceLangId == xml"
         },
         {
-          "command": "extension.mock-debug.runEditorContents",
-          "when": "resourceLangId == markdown"
+          "command": "extension.vzome-debug.runEditorContents",
+          "when": "resourceLangId == xml"
         }
       ],
       "debug/variables/context": [
         {
-          "command": "extension.mock-debug.toggleFormatting",
-          "when": "debugType == 'mock' && debugProtocolVariableMenuContext == 'simple'"
+          "command": "extension.vzome-debug.toggleFormatting",
+          "when": "debugType == 'vzome' && debugProtocolVariableMenuContext == 'simple'"
         }
       ]
     },
     "commands": [
       {
-        "command": "extension.mock-debug.debugEditorContents",
+        "command": "extension.vzome-debug.debugEditorContents",
         "title": "Debug File",
-        "category": "Mock Debug",
+        "category": "vZome Debug",
         "enablement": "!inDebugMode",
         "icon": "$(debug-alt)"
       },
       {
-        "command": "extension.mock-debug.runEditorContents",
+        "command": "extension.vzome-debug.runEditorContents",
         "title": "Run File",
-        "category": "Mock Debug",
+        "category": "vZome Debug",
         "enablement": "!inDebugMode",
         "icon": "$(play)"
       },
       {
-        "command": "extension.mock-debug.toggleFormatting",
+        "command": "extension.vzome-debug.toggleFormatting",
         "title": "Toggle between decimal and hex formatting"
       }
     ],
     "breakpoints": [
       {
-        "language": "markdown"
+        "language": "xml"
       }
     ],
     "debuggers": [
       {
-        "type": "mock",
+        "type": "vzome",
         "languages": [
-          "markdown"
+          "xml"
         ],
-        "label": "Mock Debug",
-        "program": "./out/debugAdapter.js",
-        "runtime": "node",
+        "label": "vZome Debug",
         "configurationAttributes": {
           "launch": {
             "required": [
-              "program"
+              "modelFile"
             ],
             "properties": {
-              "program": {
-                "type": "string",
-                "description": "Absolute path to a text file.",
-                "default": "${workspaceFolder}/${command:AskForProgramName}"
-              },
-              "stopOnEntry": {
-                "type": "boolean",
-                "description": "Automatically stop after launch.",
-                "default": true
-              },
-              "trace": {
-                "type": "boolean",
-                "description": "Enable logging of the Debug Adapter Protocol.",
-                "default": true
-              },
-              "compileError": {
-                "type": "string",
-                "description": "Simulates a compile error in 'launch' request.",
-                "enum": [
-                  "default",
-                  "show",
-                  "hide"
-                ],
-                "enumDescriptions": [
-                  "default: show fake compile error to user",
-                  "show fake compile error to user",
-                  "do not show fake compile error to user"
-                ]
-              }
-            }
-          },
-          "attach": {
-            "required": [
-              "program"
-            ],
-            "properties": {
-              "program": {
-                "type": "string",
-                "description": "Absolute path to a text file.",
-                "default": "${workspaceFolder}/${command:AskForProgramName}"
-              },
-              "stopOnEntry": {
-                "type": "boolean",
-                "description": "Automatically stop after attach.",
-                "default": true
-              },
-              "trace": {
-                "type": "boolean",
-                "description": "Enable logging of the Debug Adapter Protocol.",
-                "default": true
-              },
-              "compileError": {
-                "type": "string",
-                "description": "Simulates a compile error in 'attach' request.",
-                "enum": [
-                  "default",
-                  "show",
-                  "hide"
-                ],
-                "enumDescriptions": [
-                  "default: show fake compile error to user",
-                  "show fake compile error to user",
-                  "do not show fake compile error to user"
-                ]
-              }
+							"modelFile": {
+								"type": "string",
+								"description": "Absolute path to a vZome design file.",
+								"default": "${workspaceFolder}/${command:AskForProgramName}"
+							},
+							"stopOnEntry": {
+								"type": "boolean",
+								"description": "Automatically stop after launch.",
+								"default": true
+							},
+							"trace": {
+								"type": "boolean",
+								"description": "Enable logging of the Debug Adapter Protocol.",
+								"default": true
+							}
             }
           }
         },
         "initialConfigurations": [
           {
-            "type": "mock",
-            "request": "launch",
-            "name": "Ask for file name",
-            "program": "${workspaceFolder}/${command:AskForProgramName}",
-            "stopOnEntry": true
+						"type": "vzome",
+						"request": "launch",
+						"name": "Ask for file name",
+						"modelFile": "${workspaceFolder}/${command:AskForProgramName}",
+						"stopOnEntry": true,
+						"trace": true,
+						"debugServer": 8535
           }
         ],
         "configurationSnippets": [
           {
-            "label": "Mock Debug: Launch",
-            "description": "A new configuration for 'debugging' a user selected markdown file.",
-            "body": {
-              "type": "mock",
-              "request": "launch",
-              "name": "Ask for file name",
-              "program": "^\"\\${workspaceFolder}/\\${command:AskForProgramName}\"",
-              "stopOnEntry": true
-            }
+						"label": "vZome Debugger: Launch",
+						"description": "A new configuration for debugging a user-selected vZome file.",
+						"body": {
+							"type": "vzome",
+							"request": "launch",
+							"name": "Ask for file name",
+							"modelFile": "^\"\\${workspaceFolder}/\\${command:AskForProgramName}\"",
+							"stopOnEntry": true,
+							"trace": true,
+							"debugServer": 8535
+						}
           }
         ],
         "variables": {
-          "AskForProgramName": "extension.mock-debug.getProgramName"
+					"AskForProgramName": "extension.vzome-debug.getProgramName"
         }
       }
     ]

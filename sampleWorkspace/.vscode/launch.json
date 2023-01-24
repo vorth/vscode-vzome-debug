@@ -5,19 +5,11 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"type": "mock",
+			"type": "vzome",
 			"request": "launch",
-			"name": "Debug readme.md",
-			"program": "${workspaceFolder}/readme.md",
-			"stopOnEntry": true,
-			"trace": false
-		},
-		{
-			"type": "mock",
-			"request": "attach",
-			"name": "Attach readme.md",
-			"program": "${workspaceFolder}/readme.md",
-			"stopOnEntry": true,
+			"name": "Debug BCT Carbon.vZome",
+			"modelFile": "${workspaceFolder}/BCT Carbon.vZome",
+			"stopOnEntry": false,
 			"trace": false
 		}
 	]
